@@ -13,7 +13,7 @@ def logout(request):
 
 
 # log-in and after you've logged in, return to profile of user you were originally at before being asked to login
-@login_required(login_url='/login?next=profile')
+@login_required(login_url='/accounts/login')
 def profile(request):
     return render(request, 'profile.html')
 
