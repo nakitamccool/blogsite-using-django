@@ -59,10 +59,10 @@ def register(request):
             else:
                 messages.error(request, "Unable to log you in at this time")
 
-        else:
-            form = UserRegistrationForm()
+    else:
+        form = UserRegistrationForm()
 
-        args = {'form': form}
-        args.update(csrf(request))
+    args = {'form': form}
+    args.update(csrf(request))
 
-        return render(request, 'register.html', args)
+    return render(request, 'register.html', args)
