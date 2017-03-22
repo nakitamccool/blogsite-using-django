@@ -1,0 +1,134 @@
+Deploying Django Projects to Heroku/AWS S3
+
+
+Your App
+	1. requirements.txt
+	2. Procfile
+	3. DB Connection
+	4. S3 Connection
+	5. Environment Variables
+	6. Github
+
+
+Heroku
+	1. Database
+	2. Config Vars (Environment Variables)
+	3. Deploy (Github)
+
+AWS
+	1. S3 Buckets
+	2. IAM (Security)
+
+------------------------------------------------------------------------
+
+We can use either MySQL or Postgres DB on Heroku.
+We'll use Postgres for this example.
+
+1. Create a Heroku Personal Project
+
+	1.a Optionally enter a project name.
+		Must be unique accross heroku.
+		Perhaps prefix with name or website
+		e.g. com-devjoy-blog
+
+	1.b Choose 'Europe' as Runtime Selection
+
+	1.c Select 'Resources' and under 'Add-ons' enter
+		postgres, and select Heroku Postgres.
+		Provision a hobby (free) database.
+
+	1.d Click on Settings, Reveal Config Vars and note
+		that there is now a DATABASE_URL setting.
+
+2. Modify App to Connect to Heroku DB instead of local
+
+	2.a pip install dj-database-url
+
+	2.b pip install psycopg2
+
+	2.c pip freeze > requirements.txt
+
+	2.d In settings.py import dj_database_url
+
+	2.e Change the existing DB connection in settings.py
+		to use a URL
+
+		Comment out the following
+	DATABASES = {
+	    'default': {
+	        'ENGINE': 'django.db.backends.sqlite3',
+	        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+	    }
+	}
+
+	Replace with this.
+	DATABASES = {'default': dj_database_url.parse(os.environ.get('DATABASE_URL')) }
+
+    2.f Create an Environment variable in Pycharm for
+    	DATABASE_URL
+
+    	Set its values based on the postgres database.
+    	E.g. take DATABASE_URL directly from Heroku config vars
+
+    2.g Create an Environment variable in Pycharm for
+    	SECRET_KEY, take it's value from the existing
+    	key in settings.py, and modify settings.py to
+    	read the key from the environment variable.
+
+    2.h Create a file called env.py in the project folder.
+    	(Same folder as settings.py)
+
+    	Add the DATABASE_URL and SECRET_KEY variables
+    	as follows.
+
+	import os
+
+	os.environ.setdefault("SECRET_KEY", "<KEY HERE>")
+	os.environ.setdefault("DATABASE_URL", "<DB URL HERE>")
+
+    2.i python manage.py makemigrations
+    	python manage.py migrate
+
+    2.j python manage.py createsuperuser
+
+3. Connect to heroku postgres db with DataGrip
+
+	3.a Select add (+) Data Source, PostgreSQL
+
+	3.b Enter the User, Password, Host and Database
+		Get these from the DATABASE_URL
+
+		postgres://user:password@host/database
+
+	3.c Add the following to the end of the URL
+		(only in DataGrip)
+
+		?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory
+
+	3.d Click Test Connection, it should succeed.
+
+	3.e Browse the auth_user and see the super user
+
+
+4. Get Project Ready to run on Heroku
+
+	4.a Create Procfile(s)
+
+		On Mac:
+			One file called Procfile (Upper case P, no file extension)
+
+			web: gunicorn projectfolder.wsgi:application
+
+			donations above is the name of the .py file that we want to run,
+			it may be different for your project.
+
+		On Windows:
+			Same as above but with an additional Windows Procfile, see
+			Notes in LMS.
+
+
+
+	4.b pip install gunicorn
+
+
+	4.c pip freeze > requirements.txt
