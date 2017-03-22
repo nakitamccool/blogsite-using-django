@@ -27,7 +27,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', False)
 
-ALLOWED_HOSTS = ['nmc17-blog-using-django.herokuapp.com']
+ALLOWED_HOSTS = ['nmc17-blog-using-django.herokuapp.com', '127.0.0.1']
 
 INTERNAL_IPS=['127.0.0.1']
 
