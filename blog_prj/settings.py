@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
+import dj_database_url
+import env
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '0#tf_lhu7rj0f_*n*55y48f)==9f5fnmb*=-t@tt_k2^ht!lm#'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -79,17 +81,23 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'blog_prj.wsgi.application'
 
-
+#***CONFIG TO RUN WITH SQLITE DB ***#
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
+#
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+#***END: CONFIG TO RUN WITH SQLITE DB ***#
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
 
+#***CONFIG TO RUN WITH POSTGRES ON HEROKU ***#
+DATABASES = {'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))}
+
+#***END: CONFIG TO RUN WITH POSTGRES ON HEROKU ***#
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators

@@ -6,6 +6,7 @@ django-disqus==0.5
 django-forms-bootstrap==3.0.1
 django-gravatar2==1.4.0
 funcsigs==1.0.2
+gunicorn==19.7.1
 mock==2.0.0
 olefile==0.44
 packaging==16.8
