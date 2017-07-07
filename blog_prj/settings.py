@@ -75,7 +75,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                 'django.template.context_processors.media'
+                 'django.template.context_processors.media',
             ],
         },
     },
@@ -147,7 +147,7 @@ USE_TZ = True
 #     os.path.join(BASE_DIR, "static"),
 # )
 #** END: NO LONGER NEEDED WHEN USING AWS S3 **#
-[]
+# []
 DISQUS_WEBSITE_SHORTNAME = 'nakitasblog'
 SITE_ID = 1
 
